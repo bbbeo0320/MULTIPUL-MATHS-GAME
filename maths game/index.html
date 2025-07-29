@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Math Challenge</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #ddcc34 0%, #448c1b 50%, #5fdbd0 100%);
+      background-size: 200% 200%;
+      animation: rgbFlow 8s ease-in-out infinite;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes rgbFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 28px;
+      border: 2.5px solid #fff7ae;
+      max-width: 400px;
+      width: 90%;
+      padding: 40px 32px 32px 32px;
+      text-align: center;
+      margin: 40px auto;
+      transition: box-shadow 0.3s;
+    }
+    h1 {
+      font-size: 2.7em;
+      margin-bottom: 36px;
+      color: #fff;
+      letter-spacing: 2px;
+      text-shadow: 0 0 16px #34b2d56a, 0 2px 8px #005bea55;
+      font-weight: 900;
+    }
+    .main-btn {
+      display: block;
+      width: 100%;
+      margin: 14px 0;
+      padding: 18px;
+      font-size: 1.18em;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #00ccff55;
+      transition: transform 0.40s cubic-bezier(.4,2,.6,1),
+                  box-shadow 0.40s,
+                  background 0.3s;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .main-btn:hover {
+      transform: translateY(-3px) scale(1.04) rotate(-1deg);
+      box-shadow: 0 8px 24px #28a6c588;
+      background: linear-gradient(90deg, #f72c2c6d 0%, #ebe41f83 100%);
+    }
+    #owner-section, #login-section {
+      margin-top: 20px;
+    }
+    .owner-btn {
+      background: linear-gradient(90deg, #ffb347 0%, #ffcc80 100%);
+      color: #333;
+      margin-top: 10px;
+      font-weight: 700;
+      box-shadow: 0 2px 10px #ffb34744;
+    }
+    .owner-btn:hover {
+      background: linear-gradient(90deg, #9f6c1f 0%, #ffb347 100%);
+      color: #222;
+      box-shadow: 0 6px 18px #ffb34777;
+    }
+    .top-right {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    .top-btn {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .top-btn:hover {
+      background: linear-gradient(90deg, #f72c2c6d 0%, #ebe41f83 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="top-right">
+    <button class="top-btn" onclick="window.location.href='settings.html'">Settings</button>
+  </div>
+  <div class="container">
+    <h2 style="margin-top: 0; margin-bottom: 100px; font-size: 2em;">🎲 Math Challenge</h2>
+    <button class="main-btn" onclick="playBtnSound();startGame()">▶ Start Game</button>
+    <button class="main-btn" onclick="playBtnSound();openShop()">🛒 Shop</button>
+    <button class="main-btn" onclick="playBtnSound();openLeaderboard()">🏆 Leaderboard</button>
+    <div id="owner-section" style="display:none;">
+      <button class="main-btn owner-btn" onclick="openOwner()">👑 Owner</button>
+    </div>
+    <div id="login-section">
+      <button class="main-btn owner-btn" onclick="ownerLogin()">🔑 Owner Login</button>
+    </div>
+    <button id="reset-name-btn" class="main-btn owner-btn" style="display:none;" onclick="resetName()">🔄 Reset Name</button>
+  </div>
+  <audio id="btnSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae1e6.mp3"></audio>
+  <audio id="successSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b7bfa.mp3"></audio>
+  <audio id="failSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b7bfa.mp3"></audio>
+  <audio id="bgMusic" src="2025-01-21_-_News_Chill_-_www.FesliyanStudios.com.mp3" autoplay loop></audio>
+  <script>
+    let player = JSON.parse(localStorage.getItem("player") || "{}");
+    if (!player.name) {
+      let name = "";
+      while (!name) {
+        name = prompt("Enter your name:") || "";
+        name = name.trim();
+      }
+      player.name = name;
+      player.coins = 0;
+      localStorage.setItem("player", JSON.stringify(player));
+    }
+
+    function startGame() {
+      window.location.href = "game.html";
+    }
+    function openShop() {
+      window.location.href = "shop.html";
+    }
+    function openLeaderboard() {
+      window.location.href = "leaderboard.html";
+    }
+    function openOwner() {
+      window.location.href = "owner.html";
+    }
+    function ownerLogin() {
+      const pass = prompt("Enter owner password:");
+      if (pass === "and1") {
+        localStorage.setItem("isOwner", "true");
+        document.getElementById("owner-section").style.display = "block";
+        document.getElementById("login-section").style.display = "none";
+        alert("Welcome, Owner!");
+      } else {
+        alert("galt ha password bhag jao!");
+      }
+    }
+    function resetName() {
+      localStorage.removeItem("player");
+      alert("Player name has been reset! Please reload the page.");
+      location.reload();
+    }
+    function playBtnSound() {
+      document.getElementById("btnSound").currentTime = 0;
+      document.getElementById("btnSound").play();
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      const bg = document.getElementById('bgMusic');
+      if (bg) bg.volume = 0.15;
+    });
+    if (localStorage.getItem("isOwner") === "true") {
+      document.getElementById("reset-name-btn").style.display = "block";
+    }
+  </script>
+</body>
+</html>
