@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Math Challenge - Settings</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 24px;
+      border-radius: 16px;
+    }
+
+    label, select, input[type="range"] {
+      display: block;
+      margin: 20px auto;
+      font-size: 1.1em;
+    }
+
+    button {
+      margin-top: 24px;
+      padding: 10px 20px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      background: #ff8800;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ff5e00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚙️ Settings</h1>
+
+    <label>
+      👤 Change Player Name:
+      <input type="text" id="playerName" placeholder="Enter name" />
+    </label>
+
+    <label>
+      🎨 Theme:
+      <select id="themeSelect">
+        <option value="default">Default</option>
+        <option value="dark">Dark</option>
+        <option value="neon">Neon</option>
+      </select>
+    </label>
+
+    <label>
+      🎵 Music Volume:
+      <input type="range" id="musicVolume" min="0" max="100" />
+    </label>
+
+    <label>
+      🔊 Sound Effects:
+      <select id="soundToggle">
+        <option value="on">On</option>
+        <option value="off">Off</option>
+      </select>
+    </label>
+
+    <button onclick="saveSettings()">💾 Save Settings</button>
+    <button onclick="resetGame()">🗑 Reset All Data</button>
+    <button onclick="goHome()">🏠 Back Home</button>
+  </div>
+
+  <script>
+    function saveSettings() {
+      const name = document.getElementById('playerName').value;
+      const theme = document.getElementById('themeSelect').value;
+      const volume = document.getElementById('musicVolume').value;
+      const sound = document.getElementById('soundToggle').value;
+
+      let player = JSON.parse(localStorage.getItem("player") || '{}');
+      player.name = name;
+      player.theme = theme;
+      player.volume = volume;
+      player.sound = sound;
+      localStorage.setItem("player", JSON.stringify(player));
+      alert("✅ Settings Saved!");
+    }
+
+    function resetGame() {
+      if (confirm("Are you sure you want to reset all progress?")) {
+        localStorage.clear();
+        alert("🗑 Game data reset.");
+      }
+    }
+
+    function goHome() {
+      window.location.href = "index.html";
+    }
+
+    // Load existing settings on page load
+    window.onload = function () {
+      let player = JSON.parse(localStorage.getItem("player") || '{}');
+      if (player.name) document.getElementById('playerName').value = player.name;
+      if (player.theme) document.getElementById('themeSelect').value = player.theme;
+      if (player.volume) document.getElementById('musicVolume').value = player.volume;
+      if (player.sound) document.getElementById('soundToggle').value = player.sound;
+    };
+  </script>
+</body>
+</html>

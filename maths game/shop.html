@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Math Game - Shop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(120deg, #00000072 0%, #aa3030a9 5%);
+      background-size: 200% 200%;
+      animation: gradientMove 6s ease-in-out infinite;
+      text-align: center;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(130, 10, 205, 0.85);
+      padding: 24px;
+      border-radius: 16px;
+      margin-top: 40px;
+    }
+
+    .money {
+      text-align: right;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .money span {
+      font-weight: bold;
+      color: #4aeae0be;
+    }
+
+    .item {
+      margin: 16px 0;
+      padding: 16px;
+      border: 1px solid #2193b0;
+      border-radius: 10px;
+      background: #f7fbff;
+      font-size: 1.1em;
+    }
+
+    .item button {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(90deg, #5ae00ca7 0%, #d8a10a76 100%);
+      color: #190a7ab9;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #2193b055;
+      transition: background 0.2s, transform 0.1s;
+      margin-left: 12px;
+    }
+
+    .item button:hover {
+      background: linear-gradient(90deg, #6911b0a9 0%, #b7251e87 100%);
+      transform: scale(1.04);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛒 Shop</h1>
+
+    <div class="money">
+      💰 Coins: <span id="myCoins">0</span>
+    </div>
+
+    <div id="shopItems">
+      <div class="item">Extra Time (+5s) - 💰50 <button onclick="buy('extraTime',50)">Buy</button></div>
+      <div class="item">Double Coins (next Q) - 💰100 <button onclick="buy('doubleCoins',100)">Buy</button></div>
+      <div class="item">Hint (show answer) - 💰30 <button onclick="buy('hint',30)">Buy</button></div>
+      <div class="item">Skip Question - 💰40 <button onclick="buy('skip',40)">Buy</button></div>
+      <div class="item">Freeze Timer (5s) - 💰60 <button onclick="buy('freeze',60)">Buy</button></div>
+    </div>
+
+    <p><button onclick="backHome()">🏠 Back Home</button></p>
+  </div>
+
+  <script>
+    function getPlayer() {
+      return JSON.parse(localStorage.getItem("player") || '{"name":"Player","coins":0}');
+    }
+
+    function setPlayer(player) {
+      localStorage.setItem("player", JSON.stringify(player));
+    }
+
+    function updateCoins() {
+      const player = getPlayer();
+      document.getElementById("myCoins").textContent = player.coins || 0;
+    }
+
+    function buy(power, price) {
+      let player = getPlayer();
+      if ((player.coins || 0) < price) {
+        alert("❌ Not enough coins to buy this item!");
+        return;
+      }
+
+      player.coins -= price;
+      player.powers = player.powers || {};
+      player.powers[power] = (player.powers[power] || 0) + 1;
+      setPlayer(player);
+
+      alert(`✅ You bought ${power.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}!`);
+      updateCoins();
+    }
+
+    function backHome() {
+      window.location.href = "index.html";
+    }
+
+    updateCoins();
+  </script>
+</body>
+</html>
